@@ -50,7 +50,7 @@ export const App = ({ items }) => {
               input: "w-full",
               mainWrapper: "w-full",
             }}
-            placeholder="Search by email"
+            placeholder="Search by Marla"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -60,7 +60,7 @@ export const App = ({ items }) => {
         </div>
       </div>
       <div className="max-w-[95rem] mx-auto w-full">
-        <TableWrapper items={items} />
+        <TableWrapper items={filteredUsers} />
       </div>
     </div>
   );

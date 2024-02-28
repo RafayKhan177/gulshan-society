@@ -18,7 +18,7 @@ export const App = ({ items }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredUsers = items?.filter((item) =>
-    item?.size?.toLowerCase().includes(searchTerm.toLowerCase())
+    item?.name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -60,7 +60,7 @@ export const App = ({ items }) => {
         </div>
       </div>
       <div className="max-w-[95rem] mx-auto w-full">
-        <TableWrapper items={items} />
+        <TableWrapper items={filteredUsers} />
       </div>
     </div>
   );

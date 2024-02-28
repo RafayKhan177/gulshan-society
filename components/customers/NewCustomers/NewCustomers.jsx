@@ -11,6 +11,7 @@ import {
   useDisclosure,
   Input,
 } from "@nextui-org/react";
+import { postDoc } from "@/api/functions/post";
 
 export default function NewCustomers() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -22,7 +23,7 @@ export default function NewCustomers() {
 
   const handleSubmit = () => {
     // Handle form submission here
-    console.log(name, cnic, phone, address);
+    postDoc({ name, cnic, phone, address }, "customers");
     // Reset form fields
     setName("");
     setCNIC("");

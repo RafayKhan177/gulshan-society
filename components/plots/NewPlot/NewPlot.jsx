@@ -9,6 +9,7 @@ import {
   useDisclosure,
   Input,
 } from "@nextui-org/react";
+import { postDoc } from "@/api/functions/post";
 
 export default function NewPlot() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -16,7 +17,7 @@ export default function NewPlot() {
   const [size, setSize] = useState(0);
 
   const handleSubmit = () => {
-    console.log(size);
+    postDoc({ size: size }, "plots");
   };
 
   return (

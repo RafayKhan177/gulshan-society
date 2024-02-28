@@ -10,8 +10,14 @@ import {
 } from "@nextui-org/react";
 import { InfoIcon } from "@/components/icons/accounts/info-icon";
 import { TrashIcon } from "@/components/icons/accounts/trash-icon";
+import { ExportIcon } from "@/components/icons/accounts/export-icon";
+import { deleteDocument } from "@/api/functions/post";
 
 export default function TableWrapper({ items }) {
+  const deleteRow = (id) => {
+    deleteDocument("bookings", id);
+  };
+
   return (
     <Table aria-label="Example static collection table">
       <TableHeader>
@@ -28,27 +34,28 @@ export default function TableWrapper({ items }) {
       <TableBody emptyContent={"No rows to display."}>
         {items &&
           items.map((item) => (
-            <TableRow>
+            <TableRow key={item?.id}>
               {/* <TableCell>{item?.plotId}</TableCell> */}
               {/* <TableCell>{item?.customerId}</TableCell> */}
               <TableCell>{item?.date}</TableCell>
               <TableCell>{item?.time}</TableCell>
-              <TableCell>{item?.Name}</TableCell>
-              <TableCell>{item?.CNIC}</TableCell>
-              <TableCell>{item?.Phone}</TableCell>
-              <TableCell>{item?.plotSize}</TableCell>
+              <TableCell>{item?.selectedCustomer?.name}</TableCell>
+              <TableCell>{item?.selectedCustomer?.cnic}</TableCell>
+              <TableCell>{item?.selectedCustomer?.phone}</TableCell>
+              <TableCell>{item?.selectedPlot?.size}</TableCell>
               <TableCell>
-                <Tooltip content="View Image" color="secondary">
-                  <button
-                    onClick={() => console.log("View Image", user.screenshot)}
-                  >
+                <Tooltip content="View" color="success">
+                  <button>
                     <InfoIcon size={20} fill="#5a258f" />
                   </button>
                 </Tooltip>
+                <Tooltip content="Modify" color="warning">
+                  <button>
+                    <ExportIcon size={20} fill="#e12e32" />
+                  </button>
+                </Tooltip>
                 <Tooltip content="Delete" color="danger">
-                  <button
-                    onClick={() => console.log("View Image", user.screenshot)}
-                  >
+                  <button onClick={() => deleteRow(item?.id)}>
                     <TrashIcon size={20} fill="#e12e32" />
                   </button>
                 </Tooltip>

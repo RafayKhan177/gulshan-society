@@ -21,8 +21,11 @@ export default function TableWrapper({ items }) {
       <TableHeader>
         <TableColumn>Date</TableColumn>
         <TableColumn>Time</TableColumn>
-        <TableColumn>Amount</TableColumn>
-        {/* <TableColumn>Action</TableColumn> */}
+        <TableColumn>Name</TableColumn>
+        <TableColumn>CNIC</TableColumn>
+        <TableColumn>Phone</TableColumn>
+        {/* <TableColumn>Address</TableColumn> */}
+        <TableColumn>Action</TableColumn>
       </TableHeader>
       <TableBody emptyContent={"No rows to display."}>
         {items &&
@@ -30,14 +33,17 @@ export default function TableWrapper({ items }) {
             <TableRow key={item?.id}>
               <TableCell>{item?.date}</TableCell>
               <TableCell>{item?.time}</TableCell>
-              <TableCell>{item?.entry}</TableCell>
-              {/* <TableCell>
+              <TableCell>{item?.name}</TableCell>
+              <TableCell>{item?.cnic}</TableCell>
+              <TableCell>{item?.phone}</TableCell>
+              {/* <TableCell>{item?.address}</TableCell> */}
+              <TableCell>
                 <Tooltip content="Delete" color="danger">
                   <button onClick={() => deleteRow(item?.id)}>
                     <TrashIcon size={20} fill="#e12e32" />
                   </button>
                 </Tooltip>
-              </TableCell> */}
+              </TableCell>
             </TableRow>
           ))}
       </TableBody>

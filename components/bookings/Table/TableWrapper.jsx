@@ -13,6 +13,7 @@ import { TrashIcon } from "@/components/icons/accounts/trash-icon";
 import { ExportIcon } from "@/components/icons/accounts/export-icon";
 import { deleteDocument } from "@/api/functions/post";
 import NewEntry from "../NewEntry/NewEntry";
+import Link from "next/link";
 
 export default function TableWrapper({ items }) {
   const deleteRow = (id) => {
@@ -22,8 +23,6 @@ export default function TableWrapper({ items }) {
   return (
     <Table aria-label="Example static collection table">
       <TableHeader>
-        {/* <TableColumn>plotId</TableColumn> */}
-        {/* <TableColumn>customerId</TableColumn> */}
         <TableColumn>Date</TableColumn>
         <TableColumn>Time</TableColumn>
         <TableColumn>Name</TableColumn>
@@ -36,8 +35,6 @@ export default function TableWrapper({ items }) {
         {items &&
           items.map((item) => (
             <TableRow key={item?.id}>
-              {/* <TableCell>{item?.plotId}</TableCell> */}
-              {/* <TableCell>{item?.customerId}</TableCell> */}
               <TableCell>{item?.date}</TableCell>
               <TableCell>{item?.time}</TableCell>
               <TableCell>{item?.selectedCustomer?.name}</TableCell>
@@ -47,9 +44,14 @@ export default function TableWrapper({ items }) {
               <TableCell>
                 <NewEntry item={item} />
                 <Tooltip content="View" color="success">
-                  <button>
+                  <Link
+                    href={{
+                      pathname: "/bookings/view",
+                      query: { id: `${item?.id}` },
+                    }}
+                  >
                     <InfoIcon size={20} fill="#5a258f" />
-                  </button>
+                  </Link>
                 </Tooltip>
                 <Tooltip content="Delete" color="danger">
                   <button onClick={() => deleteRow(item?.id)}>

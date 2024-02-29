@@ -1,7 +1,30 @@
-import React from 'react'
+"use client";
 
-export default function page() {
+import React, { useEffect, useState } from "react";
+import { Layout } from "@/components/layout/layout";
+// import { getCollections } from "@/api/functions/get";
+
+export default function Page() {
+  // const [collection, setCollection] = useState([]);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const res = await getCollections("bookings");
+  //       setCollection(res);
+  //     } catch (error) {
+  //       console.error("Error fetching collections:", error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []);
+
   return (
-    <div>page</div>
-  )
+    <Layout>
+      {/* <App items={collection} /> */}
+
+      <p>under deveolpement bugs expected</p>
+    </Layout>
+  );
 }

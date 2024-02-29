@@ -1,11 +1,7 @@
-"use client";
+import React from 'react'
 
-import { Layout } from "@/components/layout/layout";
-
-export default function Page() {
+export default function page() {
   return (
-    <div>
-      <Layout> "loading"</Layout>
-    </div>
-  );
+    <div>page</div>
+  )
 }

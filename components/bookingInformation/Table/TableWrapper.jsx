@@ -6,14 +6,12 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  Tooltip,
 } from "@nextui-org/react";
-import { TrashIcon } from "@/components/icons/accounts/trash-icon";
 import { deleteDocument } from "@/api/functions/post";
 
 export default function TableWrapper({ items }) {
   const deleteRow = (id) => {
-    deleteDocument("customers", id);
+    deleteDocument("bookings", id);
   };
 
   return (
@@ -22,22 +20,14 @@ export default function TableWrapper({ items }) {
         <TableColumn>Date</TableColumn>
         <TableColumn>Time</TableColumn>
         <TableColumn>Amount</TableColumn>
-        {/* <TableColumn>Action</TableColumn> */}
       </TableHeader>
       <TableBody emptyContent={"No rows to display."}>
         {items &&
           items.map((item) => (
-            <TableRow key={item?.id}>
+            <TableRow key={item?.time}>
               <TableCell>{item?.date}</TableCell>
               <TableCell>{item?.time}</TableCell>
-              <TableCell>{item?.entry}</TableCell>
-              {/* <TableCell>
-                <Tooltip content="Delete" color="danger">
-                  <button onClick={() => deleteRow(item?.id)}>
-                    <TrashIcon size={20} fill="#e12e32" />
-                  </button>
-                </Tooltip>
-              </TableCell> */}
+              <TableCell>Rs {item?.entry}</TableCell>
             </TableRow>
           ))}
       </TableBody>

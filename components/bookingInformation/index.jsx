@@ -5,7 +5,7 @@ import TableWrapper from "./Table/TableWrapper";
 export default function BookingInformation({ item }) {
   console.log(item);
   return (
-    <div className="container mx-auto py-8">
+    <div className="mx-auto py-8 bg-white">
       <div className="flex justify-between items-center mx-8">
         <div className="w-1/4">
           <Image src="/logo.jpg" alt="logo" height={200} width={150} />
@@ -42,7 +42,7 @@ export default function BookingInformation({ item }) {
 
 const InfoItem = ({ label, value }) => (
   <div>
-    <p className="text-md text-gray-600">{label}</p>
-    <p className="text-sm font-semibold">{value}</p>
+    <p className="text-md text-gray-800">{label}</p>
+    <p className="text-sm text-gray-600 font-semibold">{value}</p>
   </div>
 );

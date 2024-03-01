@@ -49,18 +49,18 @@ export default function TableWrapper({ item }) {
           const dueAmount = calculateDueAmount(installmentIndex);
           return (
             <TableRow key={index}>
-              <TableCell>{installmentIndex}</TableCell>
-              <TableCell>{`Installment ${installmentIndex}`}</TableCell>
-              <TableCell>{installment.date || "-"}</TableCell>
-              <TableCell>{item?.totalPrice}</TableCell>
-              <TableCell>
+              <TableCell className="text-gray-800">{installmentIndex}</TableCell>
+              <TableCell className="text-gray-800">{`Installment ${installmentIndex}`}</TableCell>
+              <TableCell className="text-gray-800">{installment.date || "-"}</TableCell>
+              <TableCell className="text-gray-800">{item?.totalPrice}</TableCell>
+              <TableCell className="text-gray-800">
                 {installment.date || "-"} {installment.time || "-"}
               </TableCell>
-              <TableCell>{installment.amount || "-"}</TableCell>
-              <TableCell>{dueAmount || 0}</TableCell>
+              <TableCell className="text-gray-800">{installment.amount || "-"}</TableCell>
+              <TableCell className="text-gray-800">{dueAmount || 0}</TableCell>
 
-              <TableCell>{installment.remarks || "-"}</TableCell>
-              <TableCell>
+              <TableCell className="text-gray-800">{installment.remarks || "-"}</TableCell>
+              <TableCell className="text-gray-800">
                 <Tooltip content="View" color="success">
                   <InfoIcon
                     size={20}

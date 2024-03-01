@@ -40,6 +40,8 @@ export default function NewCustomers() {
     selectedPlot: null,
     selectedCustomer: null,
     totalPrice: "",
+    installmentQuarters: 0,
+    startDate: "",
   });
 
   const handleChange = (name, value) => {
@@ -49,14 +51,31 @@ export default function NewCustomers() {
     });
   };
 
+  const calculateInstallment = () => {
+    const totalPrice = parseFloat(formData.totalPrice);
+    const quarters = parseInt(formData.installmentQuarters);
+    if (totalPrice && quarters) {
+      const installmentAmount = totalPrice / quarters;
+      return installmentAmount.toFixed(2);
+    }
+    return "";
+  };
+
   const handleSubmit = () => {
     // Handle form submission here
-    postDoc(formData, "bookings");
+    const installmentAmount = calculateInstallment();
+    const bookingData = {
+      ...formData,
+      installmentAmount: installmentAmount,
+    };
+    postDoc(bookingData, "bookings");
     // Reset form fields
     setFormData({
       selectedPlot: null,
       selectedCustomer: null,
       totalPrice: "",
+      installmentQuarters: 0,
+      startDate: "",
     });
     onClose(); // Close the modal after submission
   };
@@ -102,6 +121,27 @@ export default function NewCustomers() {
               name="totalPrice"
               value={formData.totalPrice}
               onChange={(e) => handleChange("totalPrice", e.target.value)}
+            />
+            <Input
+              label="Installment Quarters"
+              name="installmentQuarters"
+              type="number"
+              value={formData.installmentQuarters}
+              onChange={(e) =>
+                handleChange("installmentQuarters", e.target.value)
+              }
+            />
+            <Input
+              label="Start Date"
+              name="startDate"
+              type="date"
+              value={formData.startDate}
+              onChange={(e) => handleChange("startDate", e.target.value)}
+            />
+            <Input
+              label="Installment Amount"
+              value={calculateInstallment()}
+              disabled
             />
           </ModalBody>
           <ModalFooter>

@@ -1,26 +1,52 @@
 "use client";
 
+import { getDocById } from "@/api/functions/get";
+import Challan from "@/components/challan";
 import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function Page() {
+  const [item, setItem] = useState([]);
+  const [loading, setLoading] = useState(true);
   const searchParams = useSearchParams();
-  const date = searchParams.get("date");
-  const time = searchParams.get("time");
-  const amount = searchParams.get("amount");
-  console.log(date, time, amount);
+
+  const id = searchParams.get("id");
+  const installmentIndex = searchParams.get("installmentIndex") - 1;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await getDocById(id, "bookings");
+        setItem(res);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching booking:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [id]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <div className="w-12 h-auto">
-      <InfoItem label="Challan No:" value={`soon`} />
-      <InfoItem label="Plot Size:" value={`soon`} />
-      <InfoItem label="Name" value={`soon`} />
+    <div className="w-full h-full">
+      <Challan
+        item={item}
+        selectedEntry={
+          item?.entries ? item?.entries[installmentIndex] : {} || {}
+        }
+      />
     </div>
   );
 }
 
-const InfoItem = ({ label, value }) => (
-  <div>
-    <p className="text-md text-gray-600">{label}</p>
-    <p className="text-sm font-semibold">{value}</p>
-  </div>
-);
+// const InfoItem = ({ label, value }) => (
+//   <div>
+//     <p className="text-md text-gray-600">{label}</p>
+//     <p className="text-sm font-semibold">{value}</p>
+//   </div>
+// );

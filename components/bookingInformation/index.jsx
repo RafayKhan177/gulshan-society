@@ -3,7 +3,14 @@ import React from "react";
 import TableWrapper from "./Table/TableWrapper";
 
 export default function BookingInformation({ item }) {
-  console.log(item);
+  function calculateTotalAmount() {
+    return item?.entries?.reduce(
+      (total, entry) => total + (entry.amount || 0),
+      0
+    );
+  }
+  // console.log(item);
+
   return (
     <div className="mx-auto py-8 bg-white">
       <div className="flex justify-between items-center mx-8">
@@ -28,13 +35,36 @@ export default function BookingInformation({ item }) {
       <Divider className="my-6" />
       <TableWrapper item={item} />
       <Divider className="my-6" />
-      <div className="flex justify-between items-center mx-8">
-        <InfoItem label="Booked At" value={item?.date + " " + item?.time} />
-        <InfoItem label="Total Price" value={`${item?.totalPrice} Rs`} />
-      
-        {/* Display remaining amount */}
-      </div>
 
+      {/* Display remaining amount */}
+
+      <div className="flex justify-between items-center mx-8">
+        <InfoItem label="Booked At" value={`${item?.date} ${item?.time}`} />
+        <div />
+        <div />
+        <InfoItem
+          label="Total Due Amount"
+          value={`Rs. ${
+            item?.installmentAmount * parseFloat(item?.installmentQuarters)
+          }`}
+        />
+        {/* <InfoItem
+          label="Total Recieved"
+          value={`Rs. ${calculateTotalAmount()} `}
+        /> */}
+        <InfoItem
+          label="Installment Outstanding"
+          value={`Rs. ${
+            item?.installmentAmount * parseFloat(item?.installmentQuarters)
+          }`}
+        />
+        {/* <div className="flex gap-6">
+        </div> */}
+        {/* <InfoItem
+          label="Surcharge Outstanding"
+          value={`${totalSurchargeOutstanding} Rs`}
+        /> */}
+      </div>
       <div></div>
     </div>
   );

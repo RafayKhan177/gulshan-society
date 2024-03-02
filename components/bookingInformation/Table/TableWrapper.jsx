@@ -11,23 +11,27 @@ import {
 import Link from "next/link";
 import { InfoIcon } from "@/components/icons/accounts/info-icon";
 
+const calculateQuarterDate = (startDate, quarterNumber) => {
+  // Convert start date to date object
+  const startDateObj = new Date(startDate);
+  // Calculate the number of months to add based on the quarter number
+  const monthsToAdd = (quarterNumber - 1) * 3;
+  // Add months to the start date
+  startDateObj.setMonth(startDateObj.getMonth() + monthsToAdd);
+  // Format the date as desired
+  const formattedDate = startDateObj.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+  return formattedDate;
+};
+
 export default function TableWrapper({ item }) {
-  const { entries, installmentAmount, installmentQuarters } = item;
+  const { entries, installmentQuarters } = item;
 
   // Calculate the total price and number of installments
-  const totalPrice = item.totalPrice;
   const totalInstallments = installmentQuarters;
-
-  // Calculate the due amount for each installment based on the current month received amount and total payment
-  const calculateDueAmount = (installmentIndex) => {
-    let totalReceivedAmount = 0;
-    // Calculate the total received amount up to the current installment
-    for (let i = 0; i < installmentIndex; i++) {
-      totalReceivedAmount = entries[i]?.amount || 0;
-    }
-    const dueAmount = totalPrice - totalReceivedAmount;
-    return dueAmount.toFixed(2);
-  };
 
   return (
     <Table aria-label="Installment Tracking Table">
@@ -39,36 +43,56 @@ export default function TableWrapper({ item }) {
         <TableColumn>Received Date & Time</TableColumn>
         <TableColumn>Received Amount</TableColumn>
         <TableColumn>Outstanding Balance</TableColumn>
-        <TableColumn>Remarks</TableColumn>
         <TableColumn>Action</TableColumn>
       </TableHeader>
       <TableBody emptyContent={"No rows to display."}>
         {Array.from({ length: totalInstallments }, (_, index) => {
           const installmentIndex = index + 1;
-          const installment = entries[index] || {}; // Get installment if exists
-          const dueAmount = calculateDueAmount(installmentIndex);
+          const installment = entries ? entries[index] : {} || {}; // Get installment if exists
+
+          const recieved = installment?.amount ? installment?.amount : 0;
+
+          const outstandingBalance =
+            parseFloat(item.installmentAmount) - recieved;
+
+          const quarterDate = calculateQuarterDate(
+            item.startDate,
+            installmentIndex
+          );
+
+          console.log(quarterDate, 5 + 4);
           return (
             <TableRow key={index}>
-              <TableCell className="text-gray-800">{installmentIndex}</TableCell>
+              <TableCell className="text-gray-800">
+                {installmentIndex}
+              </TableCell>
               <TableCell className="text-gray-800">{`Installment ${installmentIndex}`}</TableCell>
-              <TableCell className="text-gray-800">{installment.date || "-"}</TableCell>
-              <TableCell className="text-gray-800">{item?.totalPrice}</TableCell>
+              <TableCell className="text-gray-800">{quarterDate}</TableCell>
+              <TableCell className="text-gray-800">
+                {item?.installmentAmount}
+              </TableCell>
               <TableCell className="text-gray-800">
                 {installment.date || "-"} {installment.time || "-"}
               </TableCell>
-              <TableCell className="text-gray-800">{installment.amount || "-"}</TableCell>
-              <TableCell className="text-gray-800">{dueAmount || 0}</TableCell>
-
-              <TableCell className="text-gray-800">{installment.remarks || "-"}</TableCell>
+              <TableCell className="text-gray-800">
+                {installment.amount || "-"}
+              </TableCell>
+              <TableCell className="text-gray-800">
+                {outstandingBalance}
+              </TableCell>
               <TableCell className="text-gray-800">
                 <Tooltip content="View" color="success">
-                  <InfoIcon
-                    size={20}
-                    fill="#5a258f"
-                    onClick={() =>
-                      console.log(index, installment.time, installment.amount)
-                    }
-                  />
+                  <Link
+                    href={{
+                      pathname: `/bookings/${item.id}/challan`,
+                      query: {
+                        id: item.id,
+                        installmentIndex: installmentIndex,
+                      },
+                    }}
+                  >
+                    <InfoIcon size={20} fill="#5a258f" />
+                  </Link>
                 </Tooltip>
               </TableCell>
             </TableRow>

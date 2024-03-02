@@ -7,6 +7,7 @@ import {
   getFirestore,
   deleteDoc,
   updateDoc as firestoreUpdateDoc,
+  setDoc,
 } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { app } from "../FirebaseConfig";
@@ -25,20 +26,22 @@ const notify = (msg, error) => {
 
 async function postDoc(data, collectionName) {
   try {
-    const collectionRef = collection(db, collectionName);
-    const docRef = await addDoc(collectionRef, data);
-
     const dateTime = getCurrentDateTime();
+
+    // Generate a 6-digit ID
+    const id = Math.floor(100000 + Math.random() * 900000);
+
+    const docRef = doc(db, collectionName, String(id)); // Create a document reference with the generated ID
+    await setDoc(docRef, {
+      ...data,
+      id: String(id), // Include the ID in the document data
+      date: dateTime?.date,
+      time: dateTime?.time,
+    });
 
     // Example usage:
     console.log(dateTime);
 
-    const updatedData = {
-      id: docRef.id,
-      date: dateTime?.date,
-      time: dateTime?.time,
-    };
-    await updateDoc(collectionName, docRef.id, updatedData);
     notify(`Posted Successfully`);
     return true;
   } catch (error) {

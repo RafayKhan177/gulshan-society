@@ -20,6 +20,8 @@ export default function TableWrapper({ items }) {
     deleteDocument("bookings", id);
   };
 
+  console.log(items);
+
   return (
     <Table aria-label="Example static collection table">
       <TableHeader>
@@ -29,6 +31,8 @@ export default function TableWrapper({ items }) {
         <TableColumn>CNIC</TableColumn>
         <TableColumn>Phone</TableColumn>
         <TableColumn>Plot Size</TableColumn>
+        <TableColumn>Price</TableColumn>
+        <TableColumn>Ref No.</TableColumn>
         <TableColumn>Actions</TableColumn>
       </TableHeader>
       <TableBody emptyContent={"No rows to display."}>
@@ -41,6 +45,8 @@ export default function TableWrapper({ items }) {
               <TableCell>{item?.selectedCustomer?.cnic}</TableCell>
               <TableCell>{item?.selectedCustomer?.phone}</TableCell>
               <TableCell>{item?.selectedPlot?.size}</TableCell>
+              <TableCell>{item?.totalPrice}</TableCell>
+              <TableCell>{item?.id}</TableCell>
               <TableCell>
                 <NewEntry item={item} />
                 <Tooltip content="View" color="success">

@@ -1,8 +1,9 @@
-import { Divider, Image } from "@nextui-org/react";
+import { Button, Divider, Image } from "@nextui-org/react";
 import React from "react";
 import TableWrapper from "./Table/TableWrapper";
+import Link from "next/link";
 
-export default function BookingInformation({ item }) {
+export default function BookingInformation({ item, noChallan }) {
   function calculateTotalAmount() {
     return item?.entries?.reduce(
       (total, entry) => total + (entry.amount || 0),
@@ -33,7 +34,7 @@ export default function BookingInformation({ item }) {
         </div>
       </div>
       <Divider className="my-6" />
-      <TableWrapper item={item} />
+      <TableWrapper item={item} noChallan={noChallan} />
       <Divider className="my-6" />
 
       {/* Display remaining amount */}
@@ -65,7 +66,22 @@ export default function BookingInformation({ item }) {
           value={`${totalSurchargeOutstanding} Rs`}
         /> */}
       </div>
-      <div></div>
+      <div>
+        {noChallan ? null : (
+          <Link
+            href={{
+              pathname: `/print/${item.id}`,
+              query: {
+                id: item.id,
+              },
+            }}
+          >
+            <Button variant="shadow" color="warning">
+              Create PDF
+            </Button>{" "}
+          </Link>
+        )}
+      </div>
     </div>
   );
 }

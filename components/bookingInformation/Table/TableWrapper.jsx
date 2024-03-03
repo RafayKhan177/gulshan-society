@@ -27,7 +27,7 @@ const calculateQuarterDate = (startDate, quarterNumber) => {
   return formattedDate;
 };
 
-export default function TableWrapper({ item }) {
+export default function TableWrapper({ item, noChallan }) {
   const { entries, installmentQuarters } = item;
 
   // Calculate the total price and number of installments
@@ -43,20 +43,24 @@ export default function TableWrapper({ item }) {
         <TableColumn>Received Date & Time</TableColumn>
         <TableColumn>Received Amount</TableColumn>
         <TableColumn>Outstanding Balance</TableColumn>
-        <TableColumn>Action</TableColumn>
+        {noChallan ? (
+          <TableColumn></TableColumn>
+        ) : (
+          <TableColumn>Action</TableColumn>
+        )}
       </TableHeader>
       <TableBody emptyContent={"No rows to display."}>
         {Array.from({ length: totalInstallments }, (_, index) => {
           const installmentIndex = index + 1;
-          const installment = entries ? entries[index] : {} || {}; // Get installment if exists
+          const installment = entries && entries[index] ? entries[index] : {}; // Get installment if exists
 
-          const recieved = installment?.amount ? installment?.amount : 0;
+          const received = installment?.amount ? installment.amount : 0;
 
           const outstandingBalance =
-            parseFloat(item.installmentAmount) - recieved;
+            parseFloat(item?.installmentAmount) - received;
 
           const quarterDate = calculateQuarterDate(
-            item.startDate,
+            item?.startDate,
             installmentIndex
           );
 
@@ -72,29 +76,33 @@ export default function TableWrapper({ item }) {
                 {item?.installmentAmount}
               </TableCell>
               <TableCell className="text-gray-800">
-                {installment.date || "-"} {installment.time || "-"}
+                {installment?.date || "-"} {installment?.time || "-"}
               </TableCell>
               <TableCell className="text-gray-800">
-                {installment.amount || "-"}
+                {installment?.amount || "-"}
               </TableCell>
               <TableCell className="text-gray-800">
                 {outstandingBalance}
               </TableCell>
-              <TableCell className="text-gray-800">
-                <Tooltip content="View" color="success">
-                  <Link
-                    href={{
-                      pathname: `/bookings/${item.id}/challan`,
-                      query: {
-                        id: item.id,
-                        installmentIndex: installmentIndex,
-                      },
-                    }}
-                  >
-                    <InfoIcon size={20} fill="#5a258f" />
-                  </Link>
-                </Tooltip>
-              </TableCell>
+              {noChallan ? (
+                <TableCell></TableCell>
+              ) : (
+                <TableCell className="text-gray-800">
+                  <Tooltip content="View" color="success">
+                    <Link
+                      href={{
+                        pathname: `/bookings/${item.id}/challan`,
+                        query: {
+                          id: item.id,
+                          installmentIndex: installmentIndex,
+                        },
+                      }}
+                    >
+                      <InfoIcon size={20} fill="#5a258f" />
+                    </Link>
+                  </Tooltip>
+                </TableCell>
+              )}
             </TableRow>
           );
         })}
